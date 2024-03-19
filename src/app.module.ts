@@ -14,6 +14,10 @@ import { UserModule } from './modules/user/user.module';
       load: [appConfig]
     }),
     SequelizeModule.forRoot({
+      // uncomment the uri field if you want to connect to PG database
+      //comment dialect and storgage fields if you want to connect to PG database
+      
+      // uri: appConfig().databaseUrl,
       dialect: 'sqlite',
       storage: './database.sqlite',
       autoLoadModels: true,
