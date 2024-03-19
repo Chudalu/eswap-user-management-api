@@ -7,6 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserQueryDto } from './dto/user-query.dto';
 import { UserFilter } from './filters/user.filter';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -17,7 +18,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<APIResponseDto> {
-    let user = await this.getUserByEmail(createUserDto.email);
+    let user = await this.getUserByEmailOrPhoneNumber(createUserDto.email, createUserDto.phoneNumber);
     if (user) throw new ConflictException('User already created');
     try { await this.UserRepository.create({ ...(await this.getUserInstance(createUserDto)) }); }
     catch(err) { throw new BadRequestException('Bad request'); }
@@ -40,8 +41,8 @@ export class UserService {
     return new APIResponseDto('User deleted');
   }
 
-  private async getUserByEmail(email: string): Promise<User> {
-    return await this.UserRepository.findOne({ where: { email } });
+  private async getUserByEmailOrPhoneNumber(email: string, phoneNumber: string): Promise<User> {
+    return await this.UserRepository.findOne({ where: { [Op.or]: [{ email }, { phoneNumber }] } });
   }
 
   private async hashPassword(password:string): Promise<string> {
