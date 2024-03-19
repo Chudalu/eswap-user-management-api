@@ -2,7 +2,11 @@
   "name": "eswap-user-management-api",
   "version": "1.0.0",
   "description": "Simple User management API service",
-  "author": "",
+  "author": {
+    "name": "Chudalu Ezenwafor",
+    "email": "chudaluezenwafor@gmail.com",
+    "url": "http://chudaluezenwafor.com"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
